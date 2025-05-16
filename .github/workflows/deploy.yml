@@ -12,7 +12,7 @@ jobs:
       - name: Checkout source
         uses: actions/checkout@v3
         with:
-          submodules: true  # サブモジュールがある場合は必須！
+          submodules: true
 
       - name: Setup Hugo
         uses: peaceiris/actions-hugo@v2
@@ -23,7 +23,7 @@ jobs:
       - name: Build site
         run: hugo --minify
 
-      - name: Install rsync
+      - name: Install rsync  # ← これが重要！
         run: sudo apt-get update && sudo apt-get install -y rsync
 
       - name: Setup SSH
