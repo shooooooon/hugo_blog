@@ -12,7 +12,7 @@ jobs:
       - name: Checkout source
         uses: actions/checkout@v3
         with:
-          submodules: true
+          submodules: true  # テーマをsubmoduleとして管理している場合必須
 
       - name: Setup Hugo
         uses: peaceiris/actions-hugo@v2
@@ -23,7 +23,7 @@ jobs:
       - name: Build site
         run: hugo --minify
 
-      - name: Install rsync  # ← これが重要！
+      - name: Install rsync
         run: sudo apt-get update && sudo apt-get install -y rsync
 
       - name: Setup SSH
@@ -32,4 +32,6 @@ jobs:
           ssh-private-key: ${{ secrets.DEPLOY_KEY }}
 
       - name: Deploy to VPS via rsync
-        run: rsync -e "ssh -p ${{ secrets.VPS_PORT }}" -avz --delete ./public/ ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}:/var/www/html/
+        run: |
+          rsync -e "ssh -p ${{ secrets.VPS_PORT }}" -avz --delete ./public/ \
+          ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}:/var/www/html/
