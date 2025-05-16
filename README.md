@@ -3,3 +3,4 @@
 # 再デプロイテスト Fri May 16 11:00:14 PM JST 2025
 # デプロイ確認 Fri May 16 11:09:51 PM JST 2025
 # ポート修正確認 Fri May 16 11:28:57 PM JST 2025
+# VPS_USER再確認 Fri May 16 11:34:23 PM JST 2025
