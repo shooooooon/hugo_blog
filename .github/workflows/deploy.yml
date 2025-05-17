@@ -1,4 +1,4 @@
-name: Deploy Hugo site to VPS
+name: Deploy Hugo site
 
 on:
   push:
@@ -9,10 +9,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout source
+      - name: Checkout code
         uses: actions/checkout@v3
         with:
-          submodules: true  # テーマをsubmoduleとして管理している場合必須
+          submodules: true
 
       - name: Setup Hugo
         uses: peaceiris/actions-hugo@v2
@@ -21,7 +21,7 @@ jobs:
           extended: true
 
       - name: Build site
-        run: hugo --minify
+        run: hugo
 
       - name: Install rsync
         run: sudo apt-get update && sudo apt-get install -y rsync
@@ -31,7 +31,5 @@ jobs:
         with:
           ssh-private-key: ${{ secrets.DEPLOY_KEY }}
 
-      - name: Deploy to VPS via rsync
-        run: |
-          rsync -e "ssh -p ${{ secrets.VPS_PORT }}" -avz --delete ./public/ \
-          ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}:/var/www/html/
+      - name: Deploy to VPS
+        run: rsync -e "ssh -p ${{ secrets.VPS_PORT }}" -avz --delete ./public/ ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}:/var/www/html/
