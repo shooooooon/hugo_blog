@@ -4,3 +4,4 @@
 # デプロイ確認 Fri May 16 11:09:51 PM JST 2025
 # ポート修正確認 Fri May 16 11:28:57 PM JST 2025
 # VPS_USER再確認 Fri May 16 11:34:23 PM JST 2025
+# Deploy test after confirming key format Sat May 17 05:51:22 PM JST 2025
