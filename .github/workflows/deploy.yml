@@ -1,4 +1,4 @@
-name: Deploy Hugo site
+name: Deploy Hugo site to VPS
 
 on:
   push:
@@ -12,7 +12,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
         with:
-          submodules: true
+          submodules: true  # テーマが submodule の場合必須
 
       - name: Setup Hugo
         uses: peaceiris/actions-hugo@v2
@@ -20,16 +20,17 @@ jobs:
           hugo-version: '0.123.7'
           extended: true
 
-      - name: Build site
-        run: hugo
+      - name: Build Hugo site
+        run: hugo --minify
 
       - name: Install rsync
         run: sudo apt-get update && sudo apt-get install -y rsync
 
-      - name: Setup SSH
+      - name: Start SSH agent and add deploy key
         uses: webfactory/ssh-agent@v0.7.0
         with:
           ssh-private-key: ${{ secrets.DEPLOY_KEY }}
 
-      - name: Deploy to VPS
-        run: rsync -e "ssh -p ${{ secrets.VPS_PORT }}" -avz --delete ./public/ ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}:/var/www/html/
+      - name: Deploy to VPS via rsync
+        run: |
+          rsync -e "ssh -p ${{ secrets.VPS_PORT }}" -avz --delete ./public/ ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}:/var/www/html/
